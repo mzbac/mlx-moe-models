@@ -8,7 +8,7 @@ with open(Path(__file__).parent / "requirements.txt") as fid:
 
 setup(
     name="mlx-moe",
-    version="0.0.1",
+    version="0.0.2",
     description="A tool to generate text with mlx-moe model.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",

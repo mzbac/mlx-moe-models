@@ -30,10 +30,7 @@ def _get_classes(config: dict):
     return arch.Model, arch.ModelArgs
 
 
-def load_moe(model_path: Union[str, Path],tokenizer_config={}, adapter_file: str = None) -> Tuple[nn.Module, PreTrainedTokenizer]:
-    if isinstance(model_path, str):
-        model_path = Path(model_path)
-
+def load_moe(model_path: str,tokenizer_config={}, adapter_file: str = None) -> Tuple[nn.Module, PreTrainedTokenizer]:
     model_path = get_model_path(model_path)
     try:
         with open(model_path / "config.json", "r") as f:
