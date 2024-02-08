@@ -2,10 +2,13 @@ import glob
 import json
 import logging
 from pathlib import Path
-from typing import Union
+from typing import Tuple, Union
 import mlx.nn as nn
 import mlx.core as mx
 from mlx_lm.utils import get_model_path
+from mlx_lm.tuner.utils import apply_lora_layers
+
+from transformers import  AutoTokenizer, PreTrainedTokenizer
 
 from . import phi2moe, qwen2moe
 
@@ -27,7 +30,7 @@ def _get_classes(config: dict):
     return arch.Model, arch.ModelArgs
 
 
-def load_moe(model_path: Union[str, Path]) -> nn.Module:
+def load_moe(model_path: Union[str, Path],tokenizer_config={}, adapter_file: str = None) -> Tuple[nn.Module, PreTrainedTokenizer]:
     if isinstance(model_path, str):
         model_path = Path(model_path)
 
@@ -70,6 +73,10 @@ def load_moe(model_path: Union[str, Path]) -> nn.Module:
     model.load_weights(list(weights.items()))
 
     mx.eval(model.parameters())
+    if adapter_file is not None:
+        model = apply_lora_layers(model, adapter_file)
+    
+    tokenizer = AutoTokenizer.from_pretrained(model_path, **tokenizer_config)
 
     model.eval()
-    return model
+    return model, tokenizer
