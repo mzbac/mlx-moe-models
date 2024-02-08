@@ -24,3 +24,9 @@ from mlx_moe.load import load_moe
 model_path = "path_to_your_model"
 model = load_moe(model_path)
 ```
+**Command Line**
+
+You can also use mlx-moe from the command line with:
+```
+python -m mlx_moe.generate --model mzbac/phi-2-2x3-hf --prompt "how backpropagation works?"
+```
